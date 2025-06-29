@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts (now served from the Flask static folder) -->
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        :root {
+            --solar-primary: #28a745;
+            --solar-dark: #343a40;
+            --background-color: #f8f9fa;
+            --header-color: #007bff;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--background-color) 0%, #e8f5e9 100%);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* تحسينات الحاوية الرئيسية */
+        .upload-container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 850px;
+            border-top: 5px solid var(--solar-primary);
+        }
+
+        .upload-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-header img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .upload-header h1 {
+            color: var(--solar-dark);
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .upload-header p {
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        /* تحسينات النموذج */
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* تنسيق موحد لجميع الأزرار */
+        .file-label,
+        .btn-primary,
+        .btn-outline-success {
+            background-color: var(--solar-primary) !important;
+            color: white !important;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: none !important;
+            text-decoration: none;
+        }
+
+        .file-label:hover,
+        .btn-primary:hover,
+        .btn-outline-success:hover {
+            background-color: #218838 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* تحسينات معاينة الصورة */
+        .preview-container {
+            margin: 25px auto;
+            text-align: center;
+            display: none;
+            position: relative;
+            max-width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: #f8f9fa;
+            padding: 15px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+
+        .btn-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #dc3545;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .btn-remove:hover {
+            transform: scale(1.1);
+        }
+
+        .file-upload-status {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 16px;
+            color: var(--solar-dark);
+        }
+
+        /* تحسينات أزرار التحكم */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--solar-primary);
+            border: none;
+        }
+
+        .btn-outline-success {
+            background-color: var(--solar-primary);
+            border: none;
+        }
+
+        /* تحسينات أقسام التقرير */
+        .report-section {
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid var(--solar-primary);
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 20px;
+            margin: 30px 0 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dee2e6;
+            color: var(--solar-dark);
+        }
+
+        .form-table {
+            width: 100%;
+            margin-bottom: 25px;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+        .form-table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .form-control {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--solar-primary);
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* تحسينات جدول التواقيع */
+        .signature-table {
+            width: 100%;
+            margin-top: 40px;
+            border-collapse: separate;
+            border-spacing: 15px;
+        }
+
+        .signature-table td {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .signature-table input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #495057;
+            border-radius: 0;
+            text-align: center;
+            width: 80%;
+            padding: 8px;
+            font-weight: 600;
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .upload-container {
+                padding: 25px;
+                margin: 20px 15px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-table,
+            .signature-table {
+                display: block;
+            }
+
+            .form-table td,
+            .signature-table td {
+                display: block;
+                width: 100%;
+                padding: 10px 0;
+            }
+
+            .signature-table input {
+                width: 100%;
+            }
+
+            .report-section {
+                padding: 20px;
+            }
+        }
+
+        /* أنماط قسم النتائج */
+        #resultsContainer {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+        }
+
+        .result-item h4 {
+            color: var(--solar-primary);
+            margin-bottom: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+        <a href="{{ url_for('index') }}" class="navbar-brand d-flex align-items-center border-end px-4 px-lg-5">
+            <h2 class="m-0 text-primary">Solar Panel</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="{{ url_for('index') }}" class="nav-item nav-link">Home</a>
+                <a href="{{ url_for('about') }}" class="nav-item nav-link">About</a>
+
+                <a href="{{ url_for('upload') }}" class="nav-item nav-link">Upload</a>
+
+                <a href="{{ url_for('contact') }}" class="nav-item nav-link">Contact</a>
+                {% if 'user_id' in session %}
+                <a href="{{ url_for('profile') }}" class="nav-item nav-link">Profile</a>
+                <a href="{{ url_for('logout') }}" class="nav-item nav-link">Logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="nav-item nav-link">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Get
+                    Started<i class="fa fa-arrow-right ms-3"></i></a>
+                {% endif %}
+    </nav>
+    <hr>
+    <!-- Navbar End -->
+
+    <div class="upload-container">
+        <div class="upload-header">
+            <img src="{{ url_for('static', filename='img/logo-transparent.png') }}" alt="Logo"
+                style="width: 80px; height: 80px; margin-right: 10px;" />
+            <h1>Upload Solar Panel Image</h1>
+        </div>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="file-upload">
+                <input type="file" id="fileInput" name="image" accept="image/*" required>
+                <label for="fileInput" class="file-label">Choose an image to upload</label>
+            </div>
+
+            <div class="preview-container" id="previewContainer" style="display:none;">
+                <button type="button" class="btn-remove" id="removeBtn"><i class="fas fa-times"></i></button>
+                <img id="previewImage" class="preview-image" alt="Preview">
+            </div>
+
+            <div class="file-upload-status" id="fileUploadStatus">
+                <p>Please upload an EL image for analysis</p>
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit" name="action" value="quick_result" class="btn btn-primary" id="showResultsBtn"
+                    disabled>
+                    <i class="fas fa-chart-line"></i> Show Results
+                </button>
+            </div>
+        </form>
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="analyze_report">
+            <!-- Report Information Sections -->
+            <div class="report-section">
+
+                <!-- I. Customer Information -->
+                <div class="section-title">I. Customer Information</div>
+                <table class="form-table">
+                    <tr>
+                        <td>
+                            <label class="required-field">Name</label>
+                            <input type="text" name="customer_name" class="form-control" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="required-field">Address</label>
+                            <input type="text" name="customer_address" class="form-control" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="required-field">Email</label>
+                            <input type="email" name="customer_email" class="form-control" required>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- II. Sample Information -->
+                <div class="section-title">II. Sample Information</div>
+                <table class="form-table">
+                    <tr>
+                        <td width="50%">
+                            <label class="required-field">Sample type</label>
+                            <input type="text" name="sample_type" class="form-control"
+                                value="Crystalline silicon PV module" required>
+                        </td>
+                        <td>
+                            <label class="required-field">Serial No.</label>
+                            <input type="text" name="serial_no" class="form-control" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="required-field">Model</label>
+                            <input type="text" name="model" class="form-control" required>
+                        </td>
+                        <td>
+                            <label class="required-field">Received date</label>
+                            <input type="date" name="received_date" class="form-control" required>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- III. Test Information -->
+                <div class="section-title">III. Test Information</div>
+                <table class="form-table">
+                    <tr>
+                        <td width="50%">
+                            <label class="required-field">Test location</label>
+                            <input type="text" name="test_location" class="form-control" required>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="section-title">Used Devices</div>
+                <textarea name="used_devices" class="form-control" rows="5" required>
+- Camera (Nikon Z5) equipped with full spectrum Filter for EL signal detection.
+- Lens (Nikon AF Nikkor 50mm 1.8D)
+- Power Supply (Chroma 62012P-80-60)
+- Laser Distance meter (CROWCON CT44125 & CT44034)
+- Infrared Thermometer (BOSCH & TPI 376)
+                </textarea>
+
+                <div class="section-title">Camera Settings</div>
+                <table class="table table-bordered">
+                    <tr>
+                        <td width="30%"><strong>f-number of aperture</strong></td>
+                        <td><input type="text" name="f_number" class="form-control" value="1/2.2" required></td>
+                    </tr>
+                    <tr>
+                        <td><strong>ISO setting</strong></td>
+                        <td><input type="text" name="iso" class="form-control" value="200" required></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shutter speed</strong></td>
+                        <td><input type="text" name="shutter_speed" class="form-control" value="10 Sec" required></td>
+                    </tr>
+                </table>
+
+
+                <!-- Signatures -->
+                <div class="section-title">Approval</div>
+                <table class="signature-table">
+                    <tr>
+                        <td>
+                            <label>Lab Manager</label>
+                            <input type="text" name="lab_manager" class="form-control" placeholder="Name" required>
+                        </td>
+                        <td>
+                            <label>Reviewed by</label>
+                            <input type="text" name="reviewed_by" class="form-control" placeholder="Name" required>
+                        </td>
+                        <td>
+                            <label>Prepared by</label>
+                            <input type="text" name="prepared_by" class="form-control" placeholder="Name" required>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="action-buttons">
+                <button type="submit" name="action" value="analyze_report" class="btn btn-primary" id="submitBtn"
+                    >
+                    <i class="fas fa-file-pdf"></i> Generate Full Report
+                </button>
+
+            </div>
+        </form>
+
+
+        <!-- Bootstrap JS -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const fileInput = document.getElementById('fileInput');
+                const previewContainer = document.getElementById('previewContainer');
+                const previewImage = document.getElementById('previewImage');
+                const showResultsBtn = document.getElementById('showResultsBtn');
+                const submitBtn = document.getElementById('submitBtn');
+                const removeBtn = document.getElementById('removeBtn');
+
+                const uploadedImagePath = "{{ url_for('static', filename=session.get('uploaded_image_path')) if session.get('uploaded_image_path') else '' }}";
+
+                if (uploadedImagePath) {
+                    previewImage.src = uploadedImagePath;
+                    previewContainer.style.display = 'block';
+                    showResultsBtn.disabled = false;
+                    submitBtn.disabled = false;
+                }
+
+                fileInput.addEventListener('change', function () {
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        if (!file.type.match('image.*')) {
+                            alert('Please upload an image file');
+                            return;
+                        }
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            previewImage.src = e.target.result;
+                            previewContainer.style.display = 'block';
+                            showResultsBtn.disabled = false;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function () {
+                        fileInput.value = "";
+                        previewImage.src = "";
+                        previewContainer.style.display = 'none';
+                        showResultsBtn.disabled = true;
+                        submitBtn.disabled = true;
+
+                        // امسح الصورة من session على السيرفر
+                        fetch("/clear_image");
+                    });
+
+                }
+                showResultsBtn.addEventListener('click', function () {
+                    if (!fileInput.files[0] && !uploadedImagePath) {
+                        alert('Please upload an image first');
+                        return;
+                    }
+
+                    // لو فيه نتائج قبل كده، احذفها
+                    const existingResults = document.getElementById('resultsContainer');
+                    if (existingResults) {
+                        existingResults.remove();
+                    }
+
+                    // أنشئ العنصر من جديد
+                    const resultsContainer = document.createElement('div');
+                    resultsContainer.id = 'resultsContainer';
+                    resultsContainer.innerHTML = `
+        <div class="report-section" style="margin-top:20px;">
+            <h3>Analysis Results</h3>
+            <div id="analysisResults" style="padding:20px; background:#f8f9fa; border-radius:8px;"></div>
+        </div>
+    `;
+
+                    const reportSection = document.querySelector('.report-section');
+                    if (reportSection && reportSection.parentNode) {
+                        reportSection.parentNode.insertBefore(resultsContainer, reportSection);
+                    } else {
+                        document.querySelector('.upload-container').appendChild(resultsContainer);
+                    }
+
+                    const analysisResults = document.getElementById('analysisResults');
+                    analysisResults.innerHTML = '<p>Analyzing image, please wait...</p>';
+
+                    const formData = new FormData();
+                    if (fileInput.files[0]) {
+                        formData.append('image', fileInput.files[0]);
+                    } else {
+                        formData.append('use_session_image', '1');
+                    }
+
+                    fetch('/analyze', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            analysisResults.innerHTML = `
+            <div class="result-item">
+                <h4>Defects Found:</h4>
+                <p>${data.defects || 'No defects detected'}</p>
+            </div>
+            <div class="result-item">
+                <h4>Quality Score:</h4>
+                <p>${data.score || 'N/A'}</p>
+            </div>
+        `;
+                            submitBtn.disabled = false;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            analysisResults.innerHTML = '<p class="text-danger">Error analyzing image. Please try again.</p>';
+                        });
+                });
+
+            });
+        </script>
+</body>
+
+</html>

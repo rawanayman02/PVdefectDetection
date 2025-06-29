@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title> Read more about the project </title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Panel Defect Detection</title>
+
+</head>
+<body>
+      <!-- Spinner Start -->
+      <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+  
+  
+      <!-- Navbar Start -->
+      <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+        <a href="index.html" class="navbar-brand d-flex align-items-center border-end px-4 px-lg-5">
+          <h2 class="m-0 text-primary">Solar Panel </h2>
+      </a>
+          <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+              <div class="navbar-nav ms-auto p-4 p-lg-0">
+                  <a href="index.html" class="nav-item nav-link active">Home</a>
+                  <a href="about.html" class="nav-item nav-link">About</a>
+                   <a href="{{ url_for('upload') }}" class= "nav-item nav-link">Upload</a>
+     
+                  <a href="contact.html" class="nav-item nav-link">Contact</a>
+                  {% if 'user_id' in session %}
+                  <a href="{{ url_for('profile') }}" class="nav-item nav-link">Profile</a>
+                  <a href="{{ url_for('logout') }}" class="nav-item nav-link">Logout</a>
+              {% else %}
+                  <a href="{{ url_for('login') }}" class="nav-item nav-link">Login</a>
+                  <a href="{{ url_for('register') }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Get Started<i class="fa fa-arrow-right ms-3"></i></a>
+              {% endif %}
+      </nav>
+      <hr>
+      <!-- Navbar End -->
+      <div class="container">
+        <h1>Solar Panel Defect Detection System</h1>
+        <p><strong>Project Overview:</strong> Detecting defects in solar panels is crucial to ensuring optimal energy production and reducing maintenance costs. Our system leverages AI and image processing techniques to identify faults effectively.</p>
+        
+        <h2>Problem Statement</h2>
+        <p>Solar panels can develop defects over time, leading to decreased efficiency and increased operational costs. Early detection helps improve performance and longevity. Traditional manual inspection methods are time-consuming and prone to errors, making automated solutions essential.</p>
+        
+        <h2>Solution Approach</h2>
+        <p>We use advanced computer vision and machine learning models to analyze images of solar panels and detect potential defects. Our AI model is trained using a dataset of defective and non-defective panels to classify issues accurately. Additionally, thermal imaging can be integrated to detect temperature variations indicating faulty cells.</p>
+        
+        <h2>Key Features</h2>
+        <ul>
+            <li>Automated defect detection using AI</li>
+            <li>Enhanced accuracy with deep learning models</li>
+            <li>Cost-effective and scalable monitoring solution</li>
+            <li>Real-time monitoring with IoT integration</li>
+            <li>Thermal imaging support for heat-based defect analysis</li>
+        </ul>
+        
+        <h2>Technology Used</h2>
+        <p>Python, OpenCV, TensorFlow, and MATLAB for data analysis and visualization. Our model is trained using convolutional neural networks (CNNs) for image classification, and we utilize cloud computing for scalable processing.</p>
+        
+        <h2>Implementation Steps</h2>
+        <ol>
+            <li>Data collection: Gathering images of solar panels with different defects.</li>
+            <li>Preprocessing: Enhancing images using OpenCV techniques.</li>
+            <li>Model training: Using TensorFlow to train a deep learning model.</li>
+            <li>Deployment: Running real-time detection on edge devices or cloud servers.</li>
+        </ol>
+        
+        <h2>Future Scope</h2>
+        <p>We aim to enhance detection models, integrate IoT for real-time monitoring, and deploy the system in large-scale solar farms. Future improvements may include self-learning AI models that adapt to new types of defects over time.</p>
+    </div>
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+      <div class="container py-5">
+          <div class="row g-5">
+              <!-- Address Section -->
+              <div class="col-lg-3 col-md-6">
+                  <h5 class="text-white mb-4">Address</h5>
+                  <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Egypt</p>
+                  <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67000</p>
+                  <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                  <div class="d-flex pt-2">
+                      <a class="btn btn-square btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                      <a class="btn btn-square btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                      <a class="btn btn-square btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                      <a class="btn btn-square btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                  </div>
+              </div>
+
+              <!-- Quick Links Section -->
+              <div class="col-lg-3 col-md-6">
+                  <h5 class="text-white mb-4">Quick Links</h5>
+                  <a class="btn btn-link" href="">About Us</a>
+                  <a class="btn btn-link" href="">Contact Us</a>
+                  <a class="btn btn-link" href="">Our Services</a>
+                  <a class="btn btn-link" href="">Terms & Condition</a>
+                  <a class="btn btn-link" href="">Support</a>
+              </div>
+
+              <!-- Project Gallery Section -->
+              <div class="col-lg-3 col-md-6">
+                  <h5 class="text-white mb-4">Project Gallery</h5>
+                  <div class="row g-2">
+                      <div class="col-4">
+                          <img class="img-fluid rounded" src="img/gallery-1.jpg" alt="">
+                      </div>
+                      <div class="col-4">
+                          <img class="img-fluid rounded" src="img/gallery-2.jpg" alt="">
+                      </div>
+                      <div class="col-4">
+                          <img class="img-fluid rounded" src="img/gallery-3.jpg" alt="">
+                      </div>
+                      <div class="col-4">
+                          <img class="img-fluid rounded" src="img/gallery-4.jpg" alt="">
+                      </div>
+                      <div class="col-4">
+                          <img class="img-fluid rounded" src="img/gallery-5.jpg" alt="">
+                      </div>
+                      <div class="col-4">
+                          <img class="img-fluid rounded" src="img/gallery-6.jpg" alt="">
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Newsletter Section -->
+              <div class="col-lg-3 col-md-6">
+                  <h5 class="text-white mb-4">Newsletter</h5>
+                  <p>AI-Powered Solar Panel Defect Detection</p>
+                  <div class="position-relative mx-auto" style="max-width: 400px;">
+                      <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                      <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Copyright Section -->
+      <div class="container">
+          <div class="copyright">
+              <div class="row">
+                  <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                      &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                  </div>
+                  <div class="col-md-6 text-center text-md-end">
+                      Designed By <a href="https://freewebsitecreate.net">SafaAshraf</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Footer End -->
+
+  <!-- Back to Top Button -->
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/wow/wow.min.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/waypoints/waypoints.min.js"></script>
+  <script src="lib/counterup/counterup.min.js"></script>
+  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="lib/isotope/isotope.pkgd.min.js"></script>
+  <script src="lib/lightbox/js/lightbox.min.js"></script>
+
+  <!-- Template Javascript -->
+  <script src="js/main.js"></script>
+</body>
+</html>
