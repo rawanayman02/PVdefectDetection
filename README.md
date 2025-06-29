@@ -1,6 +1,4 @@
-تمام، هذه نسخة رسمية (formal) من الـ README مكتوبة كنص فقط، بدون أي أكواد أو هيكل مجلدات، حتى تنسخيها بسهولة:
 
----
 
 # PV Defect Detection
 
@@ -13,5 +11,4 @@ The project is built using Flask as the backend framework, with HTML, CSS, and J
 This tool is designed to support engineers, researchers, and technicians in evaluating the condition of PV panels quickly and accurately, providing them with valuable insights and documentation that can be used in maintenance and quality control processes.
 
 ---
-
-لو تحبي، أزود أو أعدل أي تفاصيل. 🌟
+ع
